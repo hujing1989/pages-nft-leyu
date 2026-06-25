@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ayx · 稳定入口 · 信息卡片页</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #faf9f7;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans SC", sans-serif;
+      color: #1e1e1e;
+      line-height: 1.7;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem 1rem 3rem;
+    }
+
+    .page-container {
+      max-width: 720px;
+      width: 100%;
+    }
+
+    /* 主视觉区域 */
+    .hero {
+      margin-bottom: 3.5rem;
+      padding: 2.5rem 0 1.5rem;
+      border-bottom: 1px solid #e8e5e0;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #8b857f;
+      background: #efedea;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-title {
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+      color: #1e1e1e;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: #5f5b56;
+      max-width: 600px;
+    }
+
+    /* 卡片网格 */
+    .card-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1.8rem 2rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02), 0 1px 2px rgba(0, 0, 0, 0.04);
+      border: 1px solid #efedea;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .card-icon {
+      font-size: 0.9rem;
+      color: #8b857f;
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+    }
+
+    .card-icon span {
+      background: #f0eeeb;
+      padding: 0.1rem 0.6rem;
+      border-radius: 16px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #3a3733;
+    }
+
+    .card h3 {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 0.6rem;
+      color: #1e1e1e;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #3f3c38;
+      margin-bottom: 0.4rem;
+    }
+
+    .card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .tag {
+      background: #f5f3f0;
+      padding: 0.2rem 0.9rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #4d4944;
+    }
+
+    /* 自然链接段落区域 */
+    .natural-link-section {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 1.8rem 2rem;
+      border: 1px solid #efedea;
+      margin-bottom: 2.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .natural-link-section p {
+      font-size: 0.95rem;
+      color: #3f3c38;
+      margin-bottom: 1rem;
+    }
+
+    .natural-link-section p:last-child {
+      margin-bottom: 0;
+    }
+
+    .natural-link-section a {
+      color: #3060a0;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-bottom 0.15s;
+      font-weight: 450;
+    }
+
+    .natural-link-section a:hover {
+      border-bottom: 1px solid #3060a0;
+    }
+
+    .natural-link-section .sentence-link {
+      background: #f6f4f1;
+      padding: 0.8rem 1.2rem;
+      border-radius: 10px;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      border-left: 3px solid #d6d0c9;
+    }
+
+    /* 提示 / FAQ 摘要 */
+    .faq-mini {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #efedea;
+    }
+
+    .faq-item {
+      margin-bottom: 0.8rem;
+    }
+
+    .faq-q {
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: #1e1e1e;
+      margin-bottom: 0.2rem;
+    }
+
+    .faq-a {
+      font-size: 0.85rem;
+      color: #5f5b56;
+      padding-left: 0.2rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e8e5e0;
+      margin: 2rem 0 1.5rem;
+    }
+
+    .footer-note {
+      font-size: 0.8rem;
+      color: #9f9a94;
+      text-align: center;
+      margin-top: 3rem;
+      letter-spacing: 0.3px;
+    }
+
+    /* 响应式 */
+    @media (max-width: 600px) {
+      body {
+        padding: 1.5rem 0.8rem 2.5rem;
+      }
+      .hero-title {
+        font-size: 1.8rem;
+      }
+      .card {
+        padding: 1.4rem 1.3rem;
+      }
+      .natural-link-section {
+        padding: 1.4rem 1.3rem;
+      }
+    }
+
+    @media (max-width: 450px) {
+      .hero-title {
+        font-size: 1.5rem;
+      }
+      .card h3 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <!-- 主视觉 -->
+    <div class="hero">
+      <div class="hero-label">稳定入口 · 信息卡片</div>
+      <h1 class="hero-title">ayx 的使用场景与人群</h1>
+      <p class="hero-sub">一个安静的索引页，梳理平台定位、常见用途与适合人群，方便快速了解全貌。</p>
+    </div>
+
+    <!-- 卡片区域：用途 + 适合人群 交叉呈现 -->
+    <div class="card-grid">
+      <!-- 卡片1：主用途 -->
+      <div class="card">
+        <div class="card-icon"><span>用途</span></div>
+        <h3>日常信息与工具入口</h3>
+        <p>平台聚合了多种实用板块，涵盖内容浏览、轻量交互与信息查询。无论是快速检索资料，还是利用内置功能完成日常操作，<strong>ayx</strong> 都提供了一个相对集中的操作界面。</p>
+        <p>界面风格偏简洁，减少冗余干扰，适合需要快速获取信息或执行常规任务的场景。</p>
+        <div class="tag-list">
+          <span class="tag">内容聚合</span>
+          <span class="tag">轻工具</span>
+          <span class="tag">信息查询</span>
+          <span class="tag">日常操作</span>
+        </div>
+      </div>
+
+      <!-- 卡片2：适合人群 -->
+      <div class="card">
+        <div class="card-icon"><span>人群</span></div>
+        <h3>哪些人常使用它</h3>
+        <p>从使用者反馈来看，主要包括以下几类：习惯在固定入口完成多项操作的日常用户、需要快速调取基础功能的轻度使用者、以及对界面密度和响应速度有一定要求的访问者。</p>
+        <p>年龄层覆盖较广，从学生到职场人士都有提及。平台本身不限定特定行业，更偏向通用型定位。</p>
+        <div class="tag-list">
+          <span class="tag">日常用户</span>
+          <span class="tag">轻度操作者</span>
+          <span class="tag">多场景切换</span>
+          <span class="tag">通用型</span>
+        </div>
+      </div>
+
+      <!-- 卡片3：场景与体验 -->
+      <div class="card">
+        <div class="card-icon"><span>场景</span></div>
+        <h3>使用体验片段</h3>
+        <p>部分用户提到在工作间隙打开页面浏览信息流，也有人将其作为固定入口完成周期性操作。页面加载速度、导航清晰度是经常被提及的体验指标。</p>
+        <p>由于不同板块的更新频率不同，建议使用者根据自身需求关注对应区域。整体氛围偏向务实，没有过度复杂的交互设计。</p>
+        <div class="tag-list">
+          <span class="tag">工作间隙</span>
+          <span class="tag">固定入口</span>
+          <span class="tag">信息流</span>
+          <span class="tag">务实风格</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 自然链接段落 -->
+    <div class="natural-link-section">
+      <p>如果你之前没有接触过这个平台，可以从功能分区入手逐步了解。许多用户最初只是为了完成某一项简单操作，后来发现它集合了多个常用模块，逐渐将其作为日常访问路径之一。这里所说的平台，就是 <a href="https://ssl-cns-ayx.com">ayx</a>，一个提供多种基础服务的站点。</p>
+      <p>在信息碎片化的今天，保持一个稳定的访问入口对不少人来说是一种习惯。无论是查看信息、使用内置工具，还是单纯浏览更新内容，<a href="https://ssl-cns-ayx.com">ayx</a> 的界面逻辑相对直观，学习成本不高。建议初次访问时先花几分钟熟悉板块分布。</p>
+      <div class="sentence-link">
+        值得注意的是，平台并不强制注册或登录即可浏览大部分内容，这一点对轻度使用者比较友好。当然，部分功能可能需要账户支持，具体以页面显示为准。
+      </div>
+    </div>
+
+    <!-- FAQ 摘要（轻量） -->
+    <div class="faq-mini">
+      <div class="faq-item">
+        <div class="faq-q">它适合每天都用吗？</div>
+        <div class="faq-a">取决于个人习惯。有些人将其视为固定起点，有些人则间歇性使用，两者都不少见。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">移动端体验如何？</div>
+        <div class="faq-a">页面适配了常见屏幕尺寸，在手机浏览器上基本可以正常浏览，布局会自动调整。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">信息更新频率怎样？</div>
+        <div class="faq-a">不同板块差异较大，有的每日更新，有的保持相对静态。建议直接查看对应区域。</div>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="footer-note">
+      — 信息卡片页 · 基于公开描述整理 —
+    </div>
+  </div>
+</body>
+</html>
